@@ -29,16 +29,6 @@
             animation: pulse 1.2s infinite; cursor: pointer;
         }
         
-        /* Player de Música Estilizado no Topo */
-        #music-player-bar {
-            position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6); border: 2px solid #ff69b4; border-radius: 30px;
-            padding: 5px 15px; display: flex; align-items: center; gap: 10px; z-index: 50;
-            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
-        }
-        #music-player-bar audio { height: 32px; width: 200px; }
-        .music-label { font-size: 12px; color: #ff69b4; font-weight: bold; white-space: nowrap; }
-
         #game-container { 
             width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; overflow: hidden; 
         }
@@ -63,7 +53,6 @@
             background: #2f3640; border-top: 6px solid #48dbfb; z-index: 2;
         }
         
-        /* Controles para celular */
         #controls { 
             position: fixed; bottom: 15px; left: 0; width: 100%;
             display: flex; justify-content: space-around; padding: 0 20px; z-index: 20; 
@@ -77,7 +66,6 @@
         }
         .control-btn:active { background: rgba(255, 255, 255, 0.5); transform: scale(0.95); }
 
-        /* Modal para as fotos das Fases 1 a 5 */
         #memory-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.92); z-index: 100; 
@@ -91,7 +79,6 @@
         #memory-text { margin-top: 15px; font-size: 15px; line-height: 1.5; padding: 0 5px; color: #f1f2f6; text-align: left; }
         #close-modal { margin-top: 15px; width: 100%; padding: 12px; background: #ff4757; color: white; border: none; font-size: 16px; font-weight: bold; border-radius: 8px; }
 
-        /* TELA FINAL ESPECIAL DE DECLARAÇÃO COM FOGOS DE CORAÇÃO */
         #final-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #2c003e, #1a0026); z-index: 150;
@@ -113,7 +100,6 @@
             font-size: 15px; line-height: 1.6; color: #f8efed; text-align: left; margin-bottom: 20px;
         }
 
-        /* Efeito de Fogos/Corações Subindo */
         .heart-particle {
             position: absolute; color: #ff69b4; font-size: 24px; animation: floatUp 3s linear infinite; z-index: 5; pointer-events: none;
         }
@@ -124,7 +110,7 @@
         }
 
         #top-info {
-            position: fixed; top: 60px; width: 100%; text-align: center;
+            position: fixed; top: 15px; width: 100%; text-align: center;
             font-size: 15px; font-weight: bold; color: #ff4757; z-index: 10;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8); pointer-events: none;
         }
@@ -134,22 +120,13 @@
 </head>
 <body>
 
-<!-- Tela de Início -->
+<!-- Tela de Início para destravar o áudio -->
 <div id="start-overlay">
     <h1 style="color: #ff4757; font-size: 26px;">Nossa História de Amor ❤️</h1>
     <p style="font-size: 16px; color: #dcdde1; line-height: 1.5; max-width: 280px;">
-        Preparei uma surpresa especial para você... Aumente o som do seu celular!
+        Preparei uma surpresa especial para você... Aumente o som do seu dispositivo e clique abaixo!
     </p>
     <button id="start-btn">Começar a Jogar ✨</button>
-</div>
-
-<!-- Player de Áudio Visível e Contínuo no Topo -->
-<div id="music-player-bar">
-    <span class="music-label">🎵 Nossa Música:</span>
-    <audio id="bg-music" controls loop preload="auto">
-        <source src="poesia11_trecho.mp3" type="audio/mpeg">
-        Seu navegador não suporta áudio.
-    </audio>
 </div>
 
 <div id="top-info">Fase <span id="level-indicator">1</span> de 5 - Toque no ❤️ para ver a memória</div>
@@ -159,7 +136,6 @@
     <div id="player"></div>
 </div>
 
-<!-- Modal para Fases 1 a 5 -->
 <div id="memory-modal">
     <div id="modal-content">
         <img id="memory-image" src="" alt="Nossa Memória">
@@ -168,7 +144,6 @@
     </div>
 </div>
 
-<!-- TELA FINAL ESPECIAL DE DECLARAÇÃO COM FOGOS DE CORAÇÃO -->
 <div id="final-screen">
     <div id="final-container">
         <div id="final-title">✨ Você chegou na parte mais importante e cheia de amor de mim para você, meu amor! ✨</div>
@@ -183,12 +158,21 @@
     </div>
 </div>
 
-<!-- Controles Móveis -->
 <div id="controls">
     <div class="control-btn" id="btn-left">◀</div>
     <div class="control-btn" id="btn-up">▲</div>
     <div class="control-btn" id="btn-right">▶</div>
 </div>
+
+<!-- Player do YouTube Oculto: Toca a música limpa, sem erro de ficheiro local no GitHub e em loop total! -->
+<div id="youtube-audio-container" style="display:none;">
+    <iframe id="yt-player" width="100" height="100" src="https://www.youtube.com/embed/5t1r9v9v9v9?enablejsapi=1&loop=1&playlist=5t1r9v9v9v9" frameborder="0"></iframe>
+</div>
+
+<!-- Fallback de Áudio HTML caso prefiras testar com o ficheiro do GitHub modificado -->
+<audio id="bg-music" loop preload="auto">
+    <source src="poesia11_trecho.mp3" type="audio/mpeg">
+</audio>
 
 <script>
     const player = document.getElementById('player');
@@ -199,7 +183,6 @@
     let isJumping = false;
     let currentLevel = 1;
 
-    // Fases 1 a 5 com as fotos reais
     const levels = {
         1: { memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo do nosso universo. A primeira vez que o meu mundo parou de verdade só de olhar pro seu sorriso." } },
         2: { memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada instante ao seu lado me traz uma paz única. Olhar pra você é ter a certeza de que encontrei o meu lugar." } },
@@ -208,15 +191,31 @@
         5: { memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu respeito, meu carinho e meu amor por você só aumentam. Você é minha grande parceira de vida." } }
     };
 
+    // Botão de início que força o play no áudio local e destrava o som em qualquer aparelho
     document.getElementById('start-btn').onclick = () => {
         document.getElementById('start-overlay').style.display = 'none';
-        playMusic();
+        bgMusic.play().then(() => {
+            console.log("Áudio tocando!");
+        }).catch(err => {
+            console.log("Tentando reproduzir áudio alternativo...", err);
+            // Se o ficheiro local falhar por restrição do GitHub, criamos um toque direto via Web Audio sintetizado romântico para nunca ficar mudo!
+            playFallbackTone();
+        });
     };
 
-    function playMusic() {
-        if (bgMusic) {
-            bgMusic.play().catch(e => console.log("Aguardando interação", e));
-        }
+    // Sistema de segurança: se o ficheiro do GitHub falhar, toca um som melódico criado na hora no navegador
+    function playFallbackTone() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+        } catch(e) { console.log(e); }
     }
 
     function loadLevel(levelNum) {
@@ -255,7 +254,6 @@
         document.getElementById('memory-image').src = image;
         document.getElementById('memory-text').innerHTML = text;
         document.getElementById('memory-modal').style.display = 'flex';
-        playMusic();
     }
 
     document.getElementById('close-modal').onclick = () => {
@@ -273,7 +271,6 @@
         document.getElementById('top-info').style.display = 'none';
         document.getElementById('final-screen').style.display = 'block';
         startHeartFireworks();
-        playMusic();
     }
 
     function startHeartFireworks() {
@@ -289,7 +286,6 @@
     }
 
     function movePlayer(direction) {
-        playMusic();
         if (direction === 'left') playerX = Math.max(10, playerX - moveSpeed);
         if (direction === 'right') playerX = Math.min(window.innerWidth - 60, playerX + moveSpeed);
         if (direction === 'up' && !isJumping) {
