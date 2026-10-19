@@ -29,6 +29,14 @@
             animation: pulse 1.2s infinite; cursor: pointer;
         }
         
+        #music-player-bar {
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7); border: 2px solid #ff69b4; border-radius: 30px;
+            padding: 5px 15px; display: flex; align-items: center; gap: 10px; z-index: 50;
+            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+        }
+        .music-label { font-size: 12px; color: #ff69b4; font-weight: bold; white-space: nowrap; }
+
         #game-container { 
             width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; overflow: hidden; 
         }
@@ -110,7 +118,7 @@
         }
 
         #top-info {
-            position: fixed; top: 15px; width: 100%; text-align: center;
+            position: fixed; top: 60px; width: 100%; text-align: center;
             font-size: 15px; font-weight: bold; color: #ff4757; z-index: 10;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8); pointer-events: none;
         }
@@ -120,13 +128,21 @@
 </head>
 <body>
 
-<!-- Tela de Início para destravar o áudio -->
 <div id="start-overlay">
     <h1 style="color: #ff4757; font-size: 26px;">Nossa História de Amor ❤️</h1>
     <p style="font-size: 16px; color: #dcdde1; line-height: 1.5; max-width: 280px;">
-        Preparei uma surpresa especial para você... Aumente o som do seu dispositivo e clique abaixo!
+        Preparei uma surpresa especial para você... Aumente o som do telemóvel e clique abaixo!
     </p>
     <button id="start-btn">Começar a Jogar ✨</button>
+</div>
+
+<!-- Barra de Controlo de Áudio Estilizada -->
+<div id="music-player-bar">
+    <span class="music-label">🎵 Música:</span>
+    <audio id="bg-music" controls loop preload="auto">
+        <source src="poesia11_trecho.mp3" type="audio/mpeg">
+        O seu navegador não suporta áudio.
+    </audio>
 </div>
 
 <div id="top-info">Fase <span id="level-indicator">1</span> de 5 - Toque no ❤️ para ver a memória</div>
@@ -164,16 +180,6 @@
     <div class="control-btn" id="btn-right">▶</div>
 </div>
 
-<!-- Player do YouTube Oculto: Toca a música limpa, sem erro de ficheiro local no GitHub e em loop total! -->
-<div id="youtube-audio-container" style="display:none;">
-    <iframe id="yt-player" width="100" height="100" src="https://www.youtube.com/embed/5t1r9v9v9v9?enablejsapi=1&loop=1&playlist=5t1r9v9v9v9" frameborder="0"></iframe>
-</div>
-
-<!-- Fallback de Áudio HTML caso prefiras testar com o ficheiro do GitHub modificado -->
-<audio id="bg-music" loop preload="auto">
-    <source src="poesia11_trecho.mp3" type="audio/mpeg">
-</audio>
-
 <script>
     const player = document.getElementById('player');
     const bgMusic = document.getElementById('bg-music');
@@ -191,32 +197,10 @@
         5: { memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu respeito, meu carinho e meu amor por você só aumentam. Você é minha grande parceira de vida." } }
     };
 
-    // Botão de início que força o play no áudio local e destrava o som em qualquer aparelho
     document.getElementById('start-btn').onclick = () => {
         document.getElementById('start-overlay').style.display = 'none';
-        bgMusic.play().then(() => {
-            console.log("Áudio tocando!");
-        }).catch(err => {
-            console.log("Tentando reproduzir áudio alternativo...", err);
-            // Se o ficheiro local falhar por restrição do GitHub, criamos um toque direto via Web Audio sintetizado romântico para nunca ficar mudo!
-            playFallbackTone();
-        });
+        bgMusic.play().catch(e => console.log("Erro ao reproduzir áudio:", e));
     };
-
-    // Sistema de segurança: se o ficheiro do GitHub falhar, toca um som melódico criado na hora no navegador
-    function playFallbackTone() {
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-        } catch(e) { console.log(e); }
-    }
 
     function loadLevel(levelNum) {
         currentLevel = levelNum;
