@@ -16,6 +16,18 @@
             flex-direction: column;
             justify-content: space-between;
         }
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 20, 35, 0.98); z-index: 200;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+        #start-btn {
+            margin-top: 25px; padding: 18px 35px; background: #ff4757; color: white;
+            border: none; font-size: 20px; font-weight: bold; border-radius: 50px;
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.8);
+            animation: pulse 1.2s infinite; cursor: pointer;
+        }
         #game-container { 
             width: 100vw; 
             height: 100vh; 
@@ -123,6 +135,15 @@
 </head>
 <body>
 
+<!-- Tela de Início para Liberar o Áudio no Celular -->
+<div id="start-overlay">
+    <h1 style="color: #ff4757; font-size: 26px;">Nossa História de Amor ❤️</h1>
+    <p style="font-size: 16px; color: #dcdde1; line-height: 1.5; max-width: 280px;">
+        Preparei uma surpresa especial para você... Aumente o som do seu celular!
+    </p>
+    <button id="start-btn">Começar a Jogar ✨</button>
+</div>
+
 <div id="top-info">Fase <span id="level-indicator">1</span> de 6 - Toque no ❤️ para ver a memória</div>
 
 <div id="game-container">
@@ -146,7 +167,7 @@
 </div>
 
 <!-- Áudio da Poesia Acústica -->
-<audio id="bg-music" loop>
+<audio id="bg-music" loop preload="auto">
     <source src="poesia11_trecho.mp3" type="audio/mpeg">
 </audio>
 
@@ -159,39 +180,53 @@
     let isJumping = false;
     let currentLevel = 1;
 
-    // Fases configuradas com as suas 6 fotos reais e as legendas personalizadas
+    // Fases configuradas com as suas 6 fotos reais e legendas românticas
     const levels = {
         1: { 
-            memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo de tudo. A primeira vez que o meu mundo parou de verdade só com o seu sorriso. Ali eu já percebi que tinha algo diferente." } 
+            memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo do nosso universo. A primeira vez que o meu mundo parou de verdade só de olhar pro seu sorriso. Ali eu já soube que você seria muito especial na minha vida." } 
         },
         2: { 
-            memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada momento ao seu lado se torna especial. Olhar para você me traz uma paz absurda e uma certeza imensa de que te quero por perto." } 
+            memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada instante ao seu lado me traz uma paz que eu nunca tinha sentido antes. Olhar pra você é ter a certeza absoluta de que encontrei o meu lugar no mundo." } 
         },
         3: { 
-            memory: { x: 250, y: 160, image: "foto3.jpg", text: "🥰 **Fase 3:** Nos passeios e nos detalhes mais simples, você colore a minha vida de um jeito único. Você é luz pura nos meus dias." } 
+            memory: { x: 250, y: 160, image: "foto3.jpg", text: "🥰 **Fase 3:** Nosso cantinho, nossos passeios simples... você tem o dom de transformar qualquer dia comum no momento mais perfeito de todos. Você ilumina tudo ao meu redor." } 
         },
         4: { 
-            memory: { x: 290, y: 170, image: "foto4.jpg", text: "🤪 **Fase 4:** Até nas brincadeiras e caretas a gente se completa. Com você eu posso ser eu mesmo sem medo de nada." } 
+            memory: { x: 290, y: 170, image: "foto4.jpg", text: "🤪 **Fase 4:** Com você eu sou livre, sou eu mesmo, dou as melhores risadas e me sinto o cara mais sortudo desse mundo. Nossa sintonia é única!" } 
         },
         5: { 
-            memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu carinho, meu respeito e minha paixão por você só crescem. Você é a minha parceira pra qualquer parada." } 
+            memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu respeito, meu carinho e meu amor por você só aumentam a cada dia que passa. Você é a minha melhor companhia, minha grande parceira de vida." } 
         },
-        6: { // FASE FINAL COM DECLARAÇÃO CHOCANTE E EMOCIONANTE
-            memory: { x: 270, y: 170, image: "foto6.jpg", text: "💥 **DECLARAÇÃO FINAL:**<br><br>Porra, meu amor... Você foi disparada a melhor pessoa que entrou na minha vida. Eu não consigo mais imaginar o meu mundo sem o seu carinho, sem o seu respeito e sem a sua presença.<br><br>Você me mudou completamente, me fez enxergar a vida com outros olhos e me ensinou o que é amar de verdade. Sou completamente, visceralmente apaixonado por você.<br><br>Você é a minha razão, meu norte, a pessoa mais importante de todas. Eu não vivo mais sem você. Obrigado por ser essa mulher incrível que me faz tão feliz todos os dias!" } 
+        6: { // DECLARAÇÃO FINAL EMOCIONANTE E CARINHOSA
+            memory: { x: 270, y: 170, image: "foto6.jpg", text: "💖 **DECLARAÇÃO FINAL:**<br><br>Minha pequenina... Você é, sem sombra de dúvidas, a pessoa mais linda e importante que já entrou na minha vida.<br><br>Eu não consigo mais imaginar os meus dias sem o seu abraço, sem a sua voz carinhosa, sem a sua presença quentinha e sem o seu amor. Você me transformou por inteiro, me ensinou a amar de verdade e trouxe uma felicidade que eu nem sabia que existia.<br><br>Sou completamente, infinitamente apaixonado por você. Tenho por você um respeito enorme, um carinho profundo e uma paixão que só cresce. Obrigado por ser minha companheira, por cuidar de mim e por ser o meu porto seguro.<br><br>Eu te amo com todo o meu coração, hoje e para todo o sempre! ✨❤️" } 
         }
     };
+
+    // Liberar áudio com botão inicial
+    document.getElementById('start-btn').onclick = () => {
+        document.getElementById('start-overlay').style.display = 'none';
+        playMusic();
+    };
+
+    function playMusic() {
+        if (bgMusic) {
+            bgMusic.play().then(() => {
+                console.log("Música tocando com sucesso!");
+            }).catch(e => {
+                console.log("Aguardando mais interação do usuário...", e);
+            });
+        }
+    }
 
     function loadLevel(levelNum) {
         currentLevel = levelNum;
         document.getElementById('level-indicator').innerText = levelNum;
         
-        // Remove elementos antigos da fase
         document.querySelectorAll('.memory, .level-door').forEach(el => el.remove());
 
         const container = document.getElementById('game-container');
         const levelData = levels[levelNum];
 
-        // Cria o coração (memória)
         const memEl = document.createElement('div');
         memEl.className = 'memory';
         memEl.style.left = `${levelData.memory.x}px`;
@@ -200,116 +235,6 @@
         memEl.onclick = () => showMemory(levelData.memory.image, levelData.memory.text);
         container.appendChild(memEl);
 
-        // Cria a porta para avançar (exceto na última fase)
         if (levelNum < 6) {
             const door = document.createElement('div');
             door.className = 'level-door';
-            door.innerHTML = `Fase ${levelNum+1} ➔`;
-            door.onclick = () => loadLevel(levelNum + 1);
-            container.appendChild(door);
-        }
-        
-        playerX = 40;
-        updatePlayerPosition();
-    }
-
-    function showMemory(image, text) {
-        document.getElementById('memory-image').src = image;
-        document.getElementById('memory-text').innerHTML = text;
-        document.getElementById('memory-modal').style.display = 'flex';
-        playMusic();
-    }
-
-    document.getElementById('close-modal').onclick = () => {
-        document.getElementById('memory-modal').style.display = 'none';
-        if (currentLevel < 6) {
-            loadLevel(currentLevel + 1);
-        }
-    };
-
-    function movePlayer(direction) {
-        playMusic();
-        if (direction === 'left') playerX = Math.max(10, playerX - moveSpeed);
-        if (direction === 'right') playerX = Math.min(window.innerWidth - 60, playerX + moveSpeed);
-        if (direction === 'up' && !isJumping) {
-            isJumping = true;
-            let jumpHeight = 0;
-            const jumpInterval = setInterval(() => {
-                playerY += 8;
-                jumpHeight += 8;
-                updatePlayerPosition();
-                if (jumpHeight >= 110) {
-                    clearInterval(jumpInterval);
-                    const fallInterval = setInterval(() => {
-                        playerY -= 8;
-                        updatePlayerPosition();
-                        if (playerY <= 0) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-                            playerY = 0;
-                            updatePlayerPosition();
-                        }
-                    }, 20);
-                }
-            }, 20);
-        }
-        updatePlayerPosition();
-        checkCollisions();
-    }
-
-    function updatePlayerPosition() {
-        player.style.left = `${playerX}px`;
-        player.style.bottom = `${playerY + 120}px`;
-    }
-
-    function checkCollisions() {
-        const playerRect = player.getBoundingClientRect();
-        
-        // Verifica clique ou proximidade com o coração
-        const memoryEl = document.querySelector('.memory');
-        if (memoryEl) {
-            const memRect = memoryEl.getBoundingClientRect();
-            if (playerRect.right > memRect.left && playerRect.left < memRect.right &&
-                playerRect.bottom > memRect.top && playerRect.top < memRect.bottom) {
-                memoryEl.click();
-            }
-        }
-
-        // Verifica colisão com a porta da próxima fase
-        const doorEl = document.querySelector('.level-door');
-        if (doorEl) {
-            const doorRect = doorEl.getBoundingClientRect();
-            if (playerRect.right > doorRect.left && playerRect.left < doorRect.right) {
-                if (currentLevel < 6) loadLevel(currentLevel + 1);
-            }
-        }
-    }
-
-    function playMusic() {
-        if (bgMusic.paused) {
-            bgMusic.play().catch(e => console.log("Áudio aguardando interação"));
-        }
-    }
-
-    // Controles de toque para celular
-    document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('left'); });
-    document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('right'); });
-    document.getElementById('btn-up').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('up'); });
-
-    // Suporte a cliques normais (caso teste no computador)
-    document.getElementById('btn-left').addEventListener('click', () => movePlayer('left'));
-    document.getElementById('btn-right').addEventListener('click', () => movePlayer('right'));
-    document.getElementById('btn-up').addEventListener('click', () => movePlayer('up'));
-
-    // Teclado do PC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') movePlayer('left');
-        if (e.key === 'ArrowRight') movePlayer('right');
-        if (e.key === 'ArrowUp' || e.key === ' ') movePlayer('up');
-    });
-
-    // Inicia a Fase 1
-    loadLevel(1);
-</script>
-</body>
-</html>
