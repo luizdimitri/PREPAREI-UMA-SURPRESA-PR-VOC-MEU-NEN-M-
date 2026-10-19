@@ -28,106 +28,105 @@
             box-shadow: 0 0 20px rgba(255, 71, 87, 0.8);
             animation: pulse 1.2s infinite; cursor: pointer;
         }
+        
+        /* Player de Música Estilizado no Topo */
+        #music-player-bar {
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6); border: 2px solid #ff69b4; border-radius: 30px;
+            padding: 5px 15px; display: flex; align-items: center; gap: 10px; z-index: 50;
+            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+        }
+        #music-player-bar audio { height: 32px; width: 200px; }
+        .music-label { font-size: 12px; color: #ff69b4; font-weight: bold; white-space: nowrap; }
+
         #game-container { 
-            width: 100vw; 
-            height: 100vh; 
-            position: absolute; 
-            top: 0; left: 0; 
-            overflow: hidden; 
+            width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; overflow: hidden; 
         }
         #player { 
-            width: 45px; height: 45px; 
-            background: #ff4757; 
-            position: absolute; 
-            bottom: 120px; left: 40px; 
-            border-radius: 50%; 
-            box-shadow: 0 0 15px #ff4757;
-            z-index: 5;
-            transition: transform 0.1s;
+            width: 45px; height: 45px; background: #ff4757; position: absolute; 
+            bottom: 120px; left: 40px; border-radius: 50%; box-shadow: 0 0 15px #ff4757;
+            z-index: 5; transition: transform 0.1s;
         }
         .memory { 
-            width: 55px; height: 55px; 
-            background: gold; 
-            position: absolute; 
-            border-radius: 50%; 
-            border: 4px solid white; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 26px; 
-            box-shadow: 0 0 15px gold;
-            animation: pulse 1.2s infinite; 
-            z-index: 4;
+            width: 55px; height: 55px; background: gold; position: absolute; 
+            border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; 
+            font-size: 26px; box-shadow: 0 0 15px gold; animation: pulse 1.2s infinite; z-index: 4;
         }
         .level-door { 
-            width: 65px; height: 110px; 
-            background: #8b4513; 
-            position: absolute; bottom: 120px; right: 30px;
-            border: 4px solid #deb887;
-            border-radius: 8px 8px 0 0;
+            width: 65px; height: 110px; background: #8b4513; position: absolute; bottom: 120px; right: 30px;
+            border: 4px solid #deb887; border-radius: 8px 8px 0 0;
             display: flex; align-items: center; justify-content: center; 
-            font-weight: bold; font-size: 14px; color: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 3;
+            font-weight: bold; font-size: 14px; color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 3;
         }
         .ground {
             position: absolute; bottom: 0; width: 100%; height: 120px;
-            background: #2f3640;
-            border-top: 6px solid #48dbfb;
-            z-index: 2;
+            background: #2f3640; border-top: 6px solid #48dbfb; z-index: 2;
         }
         
-        /* Controles para celular Otimizados */
+        /* Controles para celular */
         #controls { 
             position: fixed; bottom: 15px; left: 0; width: 100%;
-            display: flex; justify-content: space-around; padding: 0 20px;
-            z-index: 20; 
+            display: flex; justify-content: space-around; padding: 0 20px; z-index: 20; 
         }
         .control-btn { 
-            width: 75px; height: 75px; 
-            background: rgba(255, 255, 255, 0.25); 
-            border: 3px solid white; 
-            border-radius: 50%; 
-            color: white; font-size: 32px; 
+            width: 75px; height: 75px; background: rgba(255, 255, 255, 0.25); 
+            border: 3px solid white; border-radius: 50%; color: white; font-size: 32px; 
             display: flex; align-items: center; justify-content: center; 
-            user-select: none; -webkit-user-select: none; 
-            backdrop-filter: blur(5px);
+            user-select: none; -webkit-user-select: none; backdrop-filter: blur(5px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .control-btn:active { background: rgba(255, 255, 255, 0.5); transform: scale(0.95); }
 
-        /* Modal para exibir as fotos e declarações */
+        /* Modal para as fotos das Fases 1 a 5 */
         #memory-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.92); z-index: 100; 
-            flex-direction: column; justify-content: center; align-items: center; 
-            padding: 20px; box-sizing: border-box;
+            flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
         }
         #modal-content { 
-            max-width: 100%; width: 340px; text-align: center; 
-            background: #111; padding: 15px; border-radius: 12px;
-            border: 2px solid #ff4757;
-            box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
-            max-height: 90vh; overflow-y: auto;
+            max-width: 100%; width: 340px; text-align: center; background: #111; padding: 15px; border-radius: 12px;
+            border: 2px solid #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.4); max-height: 90vh; overflow-y: auto;
         }
-        #memory-image { 
-            width: 100%; max-height: 45vh; object-fit: cover; 
-            border: 3px solid white; border-radius: 8px; 
+        #memory-image { width: 100%; max-height: 45vh; object-fit: cover; border: 3px solid white; border-radius: 8px; }
+        #memory-text { margin-top: 15px; font-size: 15px; line-height: 1.5; padding: 0 5px; color: #f1f2f6; text-align: left; }
+        #close-modal { margin-top: 15px; width: 100%; padding: 12px; background: #ff4757; color: white; border: none; font-size: 16px; font-weight: bold; border-radius: 8px; }
+
+        /* TELA FINAL ESPECIAL DE DECLARAÇÃO COM FOGOS DE CORAÇÃO */
+        #final-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2c003e, #1a0026); z-index: 150;
+            overflow-y: auto; padding: 70px 20px 30px 20px; box-sizing: border-box; text-align: center;
         }
-        #memory-text { 
-            margin-top: 15px; font-size: 15px; line-height: 1.5; 
-            padding: 0 5px; color: #f1f2f6; text-align: left;
+        #final-container {
+            max-width: 450px; margin: 0 auto; background: rgba(15, 5, 25, 0.85);
+            border: 3px solid #ff69b4; border-radius: 20px; padding: 25px;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); position: relative; z-index: 10;
         }
-        #close-modal { 
-            margin-top: 15px; width: 100%; padding: 12px; 
-            background: #ff4757; color: white; border: none; 
-            font-size: 16px; font-weight: bold; border-radius: 8px; 
-            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+        #final-image {
+            width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px;
+            border: 4px solid #ff69b4; box-shadow: 0 0 20px rgba(255, 105, 180, 0.5); margin-bottom: 20px;
+        }
+        #final-title {
+            color: #ff69b4; font-size: 20px; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+        #final-text {
+            font-size: 15px; line-height: 1.6; color: #f8efed; text-align: left; margin-bottom: 20px;
+        }
+
+        /* Efeito de Fogos/Corações Subindo */
+        .heart-particle {
+            position: absolute; color: #ff69b4; font-size: 24px; animation: floatUp 3s linear infinite; z-index: 5; pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
         }
 
         #top-info {
-            position: fixed; top: 15px; width: 100%; text-align: center;
-            font-size: 16px; font-weight: bold; color: #ff4757; z-index: 10;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            pointer-events: none;
+            position: fixed; top: 60px; width: 100%; text-align: center;
+            font-size: 15px; font-weight: bold; color: #ff4757; z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8); pointer-events: none;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); } }
@@ -135,7 +134,7 @@
 </head>
 <body>
 
-<!-- Tela de Início para Liberar o Áudio no Celular -->
+<!-- Tela de Início -->
 <div id="start-overlay">
     <h1 style="color: #ff4757; font-size: 26px;">Nossa História de Amor ❤️</h1>
     <p style="font-size: 16px; color: #dcdde1; line-height: 1.5; max-width: 280px;">
@@ -144,18 +143,43 @@
     <button id="start-btn">Começar a Jogar ✨</button>
 </div>
 
-<div id="top-info">Fase <span id="level-indicator">1</span> de 6 - Toque no ❤️ para ver a memória</div>
+<!-- Player de Áudio Visível e Contínuo no Topo -->
+<div id="music-player-bar">
+    <span class="music-label">🎵 Nossa Música:</span>
+    <audio id="bg-music" controls loop preload="auto">
+        <source src="poesia11_trecho.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+</div>
+
+<div id="top-info">Fase <span id="level-indicator">1</span> de 5 - Toque no ❤️ para ver a memória</div>
 
 <div id="game-container">
     <div class="ground"></div>
     <div id="player"></div>
 </div>
 
+<!-- Modal para Fases 1 a 5 -->
 <div id="memory-modal">
     <div id="modal-content">
         <img id="memory-image" src="" alt="Nossa Memória">
         <div id="memory-text"></div>
         <button id="close-modal">Continuar Jornada ❤️</button>
+    </div>
+</div>
+
+<!-- TELA FINAL ESPECIAL DE DECLARAÇÃO COM FOGOS DE CORAÇÃO -->
+<div id="final-screen">
+    <div id="final-container">
+        <div id="final-title">✨ Você chegou na parte mais importante e cheia de amor de mim para você, meu amor! ✨</div>
+        <img id="final-image" src="foto6.jpg" alt="Nossa Foto Final">
+        <div id="final-text">
+            Minha pequenina...<br><br>
+            Você chegou ao final do jogo, mas a nossa história está apenas começando de uma forma eterna. Você foi disparada a melhor e mais maravilhosa pessoa que já entrou na minha vida.<br><br>
+            Eu quero te prometer uma coisa aqui do fundo do meu coração: <strong>eu vou te proteger, vou te fazer sentir sempre segura</strong> e vou dar o meu melhor todos os dias para te ver sorrindo e feliz. Quero ser o seu refúgio e o seu porto seguro para qualquer momento.<br><br>
+            Não consigo mais imaginar meus dias sem o seu abraço, sem a sua voz e sem a sua presença. Você me transformou por inteiro e me ensinou o que é amar de verdade. Sou completamente e profundamente apaixonado por você. Tenho um orgulho imenso, um respeito gigante e um amor que não cabe no peito.<br><br>
+            Obrigado por ser minha companheira e o amor da minha vida. Eu te amo hoje, amanhã e para sempre! ❤️✨
+        </div>
     </div>
 </div>
 
@@ -166,11 +190,6 @@
     <div class="control-btn" id="btn-right">▶</div>
 </div>
 
-<!-- Áudio da Poesia Acústica -->
-<audio id="bg-music" loop preload="auto">
-    <source src="poesia11_trecho.mp3" type="audio/mpeg">
-</audio>
-
 <script>
     const player = document.getElementById('player');
     const bgMusic = document.getElementById('bg-music');
@@ -180,29 +199,15 @@
     let isJumping = false;
     let currentLevel = 1;
 
-    // Fases configuradas com as suas 6 fotos reais e legendas românticas
+    // Fases 1 a 5 com as fotos reais
     const levels = {
-        1: { 
-            memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo do nosso universo. A primeira vez que o meu mundo parou de verdade só de olhar pro seu sorriso. Ali eu já soube que você seria muito especial na minha vida." } 
-        },
-        2: { 
-            memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada instante ao seu lado me traz uma paz que eu nunca tinha sentido antes. Olhar pra você é ter a certeza absoluta de que encontrei o meu lugar no mundo." } 
-        },
-        3: { 
-            memory: { x: 250, y: 160, image: "foto3.jpg", text: "🥰 **Fase 3:** Nosso cantinho, nossos passeios simples... você tem o dom de transformar qualquer dia comum no momento mais perfeito de todos. Você ilumina tudo ao meu redor." } 
-        },
-        4: { 
-            memory: { x: 290, y: 170, image: "foto4.jpg", text: "🤪 **Fase 4:** Com você eu sou livre, sou eu mesmo, dou as melhores risadas e me sinto o cara mais sortudo desse mundo. Nossa sintonia é única!" } 
-        },
-        5: { 
-            memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu respeito, meu carinho e meu amor por você só aumentam a cada dia que passa. Você é a minha melhor companhia, minha grande parceira de vida." } 
-        },
-        6: { // DECLARAÇÃO FINAL EMOCIONANTE E CARINHOSA
-            memory: { x: 270, y: 170, image: "foto6.jpg", text: "💖 **DECLARAÇÃO FINAL:**<br><br>Minha pequenina... Você é, sem sombra de dúvidas, a pessoa mais linda e importante que já entrou na minha vida.<br><br>Eu não consigo mais imaginar os meus dias sem o seu abraço, sem a sua voz carinhosa, sem a sua presença quentinha e sem o seu amor. Você me transformou por inteiro, me ensinou a amar de verdade e trouxe uma felicidade que eu nem sabia que existia.<br><br>Sou completamente, infinitamente apaixonado por você. Tenho por você um respeito enorme, um carinho profundo e uma paixão que só cresce. Obrigado por ser minha companheira, por cuidar de mim e por ser o meu porto seguro.<br><br>Eu te amo com todo o meu coração, hoje e para todo o sempre! ✨❤️" } 
-        }
+        1: { memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo do nosso universo. A primeira vez que o meu mundo parou de verdade só de olhar pro seu sorriso." } },
+        2: { memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada instante ao seu lado me traz uma paz única. Olhar pra você é ter a certeza de que encontrei o meu lugar." } },
+        3: { memory: { x: 250, y: 160, image: "foto3.jpg", text: "🥰 **Fase 3:** Nossos passeios e momentos simples... você transforma qualquer dia comum no momento mais perfeito." } },
+        4: { memory: { x: 290, y: 170, image: "foto4.jpg", text: "🤪 **Fase 4:** Com você eu sou livre, dou as melhores risadas e me sinto o cara mais sortudo desse mundo!" } },
+        5: { memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu respeito, meu carinho e meu amor por você só aumentam. Você é minha grande parceira de vida." } }
     };
 
-    // Liberar áudio com botão inicial
     document.getElementById('start-btn').onclick = () => {
         document.getElementById('start-overlay').style.display = 'none';
         playMusic();
@@ -210,11 +215,7 @@
 
     function playMusic() {
         if (bgMusic) {
-            bgMusic.play().then(() => {
-                console.log("Música tocando com sucesso!");
-            }).catch(e => {
-                console.log("Aguardando mais interação do usuário...", e);
-            });
+            bgMusic.play().catch(e => console.log("Aguardando interação", e));
         }
     }
 
@@ -235,6 +236,129 @@
         memEl.onclick = () => showMemory(levelData.memory.image, levelData.memory.text);
         container.appendChild(memEl);
 
-        if (levelNum < 6) {
-            const door = document.createElement('div');
-            door.className = 'level-door';
+        const door = document.createElement('div');
+        door.className = 'level-door';
+        if (levelNum < 5) {
+            door.innerHTML = `Fase ${levelNum+1} ➔`;
+            door.onclick = () => loadLevel(levelNum + 1);
+        } else {
+            door.innerHTML = `Amor ➔`;
+            door.onclick = () => showFinalScreen();
+        }
+        container.appendChild(door);
+        
+        playerX = 40;
+        updatePlayerPosition();
+    }
+
+    function showMemory(image, text) {
+        document.getElementById('memory-image').src = image;
+        document.getElementById('memory-text').innerHTML = text;
+        document.getElementById('memory-modal').style.display = 'flex';
+        playMusic();
+    }
+
+    document.getElementById('close-modal').onclick = () => {
+        document.getElementById('memory-modal').style.display = 'none';
+        if (currentLevel < 5) {
+            loadLevel(currentLevel + 1);
+        } else {
+            showFinalScreen();
+        }
+    };
+
+    function showFinalScreen() {
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('controls').style.display = 'none';
+        document.getElementById('top-info').style.display = 'none';
+        document.getElementById('final-screen').style.display = 'block';
+        startHeartFireworks();
+        playMusic();
+    }
+
+    function startHeartFireworks() {
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-particle';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, 300);
+    }
+
+    function movePlayer(direction) {
+        playMusic();
+        if (direction === 'left') playerX = Math.max(10, playerX - moveSpeed);
+        if (direction === 'right') playerX = Math.min(window.innerWidth - 60, playerX + moveSpeed);
+        if (direction === 'up' && !isJumping) {
+            isJumping = true;
+            let jumpHeight = 0;
+            const jumpInterval = setInterval(() => {
+                playerY += 8;
+                jumpHeight += 8;
+                updatePlayerPosition();
+                if (jumpHeight >= 110) {
+                    clearInterval(jumpInterval);
+                    const fallInterval = setInterval(() => {
+                        playerY -= 8;
+                        updatePlayerPosition();
+                        if (playerY <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                            playerY = 0;
+                            updatePlayerPosition();
+                        }
+                    }, 20);
+                }
+            }, 20);
+        }
+        updatePlayerPosition();
+        checkCollisions();
+    }
+
+    function updatePlayerPosition() {
+        player.style.left = `${playerX}px`;
+        player.style.bottom = `${playerY + 120}px`;
+    }
+
+    function checkCollisions() {
+        const playerRect = player.getBoundingClientRect();
+        
+        const memoryEl = document.querySelector('.memory');
+        if (memoryEl) {
+            const memRect = memoryEl.getBoundingClientRect();
+            if (playerRect.right > memRect.left && playerRect.left < memRect.right &&
+                playerRect.bottom > memRect.top && playerRect.top < memRect.bottom) {
+                memoryEl.click();
+            }
+        }
+
+        const doorEl = document.querySelector('.level-door');
+        if (doorEl) {
+            const doorRect = doorEl.getBoundingClientRect();
+            if (playerRect.right > doorRect.left && playerRect.left < doorRect.right) {
+                doorEl.click();
+            }
+        }
+    }
+
+    document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('left'); });
+    document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('right'); });
+    document.getElementById('btn-up').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('up'); });
+
+    document.getElementById('btn-left').addEventListener('click', () => movePlayer('left'));
+    document.getElementById('btn-right').addEventListener('click', () => movePlayer('right'));
+    document.getElementById('btn-up').addEventListener('click', () => movePlayer('up'));
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') movePlayer('left');
+        if (e.key === 'ArrowRight') movePlayer('right');
+        if (e.key === 'ArrowUp' || e.key === ' ') movePlayer('up');
+    });
+
+    loadLevel(1);
+</script>
+</body>
+</html>
