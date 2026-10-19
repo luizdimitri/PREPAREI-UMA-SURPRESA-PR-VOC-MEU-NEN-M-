@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nossa Jornada de Amor</title>
+    <style>
+        * { box-sizing: border-box; touch-action: manipulation; }
+        body { 
+            margin: 0; padding: 0; overflow: hidden; 
+            background: linear-gradient(135deg, #1a1a2e, #16213e); 
+            font-family: 'Courier New', Courier, monospace; 
+            color: white; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #game-container { 
+            width: 100vw; 
+            height: 100vh; 
+            position: absolute; 
+            top: 0; left: 0; 
+            overflow: hidden; 
+        }
+        #player { 
+            width: 45px; height: 45px; 
+            background: #ff4757; 
+            position: absolute; 
+            bottom: 120px; left: 40px; 
+            border-radius: 50%; 
+            box-shadow: 0 0 15px #ff4757;
+            z-index: 5;
+            transition: transform 0.1s;
+        }
+        .memory { 
+            width: 55px; height: 55px; 
+            background: gold; 
+            position: absolute; 
+            border-radius: 50%; 
+            border: 4px solid white; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 26px; 
+            box-shadow: 0 0 15px gold;
+            animation: pulse 1.2s infinite; 
+            z-index: 4;
+        }
+        .level-door { 
+            width: 65px; height: 110px; 
+            background: #8b4513; 
+            position: absolute; bottom: 120px; right: 30px;
+            border: 4px solid #deb887;
+            border-radius: 8px 8px 0 0;
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; font-size: 14px; color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 3;
+        }
+        .ground {
+            position: absolute; bottom: 0; width: 100%; height: 120px;
+            background: #2f3640;
+            border-top: 6px solid #48dbfb;
+            z-index: 2;
+        }
+        
+        /* Controles para celular Otimizados */
+        #controls { 
+            position: fixed; bottom: 15px; left: 0; width: 100%;
+            display: flex; justify-content: space-around; padding: 0 20px;
+            z-index: 20; 
+        }
+        .control-btn { 
+            width: 75px; height: 75px; 
+            background: rgba(255, 255, 255, 0.25); 
+            border: 3px solid white; 
+            border-radius: 50%; 
+            color: white; font-size: 32px; 
+            display: flex; align-items: center; justify-content: center; 
+            user-select: none; -webkit-user-select: none; 
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .control-btn:active { background: rgba(255, 255, 255, 0.5); transform: scale(0.95); }
 
+        /* Modal para exibir as fotos e declarações */
+        #memory-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.92); z-index: 100; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            padding: 20px; box-sizing: border-box;
+        }
+        #modal-content { 
+            max-width: 100%; width: 340px; text-align: center; 
+            background: #111; padding: 15px; border-radius: 12px;
+            border: 2px solid #ff4757;
+            box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
+            max-height: 90vh; overflow-y: auto;
+        }
+        #memory-image { 
+            width: 100%; max-height: 45vh; object-fit: cover; 
+            border: 3px solid white; border-radius: 8px; 
+        }
+        #memory-text { 
+            margin-top: 15px; font-size: 15px; line-height: 1.5; 
+            padding: 0 5px; color: #f1f2f6; text-align: left;
+        }
+        #close-modal { 
+            margin-top: 15px; width: 100%; padding: 12px; 
+            background: #ff4757; color: white; border: none; 
+            font-size: 16px; font-weight: bold; border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+        }
+
+        #top-info {
+            position: fixed; top: 15px; width: 100%; text-align: center;
+            font-size: 16px; font-weight: bold; color: #ff4757; z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+<div id="top-info">Fase <span id="level-indicator">1</span> de 6 - Toque no ❤️ para ver a memória</div>
+
+<div id="game-container">
+    <div class="ground"></div>
+    <div id="player"></div>
+</div>
+
+<div id="memory-modal">
+    <div id="modal-content">
+        <img id="memory-image" src="" alt="Nossa Memória">
+        <div id="memory-text"></div>
+        <button id="close-modal">Continuar Jornada ❤️</button>
+    </div>
+</div>
+
+<!-- Controles Móveis -->
+<div id="controls">
+    <div class="control-btn" id="btn-left">◀</div>
+    <div class="control-btn" id="btn-up">▲</div>
+    <div class="control-btn" id="btn-right">▶</div>
+</div>
+
+<!-- Áudio da Poesia Acústica -->
+<audio id="bg-music" loop>
+    <source src="poesia11_trecho.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    const player = document.getElementById('player');
+    const bgMusic = document.getElementById('bg-music');
+    let playerX = 40;
+    let playerY = 0;
+    const moveSpeed = 15;
+    let isJumping = false;
+    let currentLevel = 1;
+
+    // Fases configuradas com as suas 6 fotos reais e as legendas personalizadas
+    const levels = {
+        1: { 
+            memory: { x: 260, y: 150, image: "foto1.jpg", text: "❤️ **Fase 1:** O começo de tudo. A primeira vez que o meu mundo parou de verdade só com o seu sorriso. Ali eu já percebi que tinha algo diferente." } 
+        },
+        2: { 
+            memory: { x: 280, y: 180, image: "foto2.jpg", text: "✨ **Fase 2:** Cada momento ao seu lado se torna especial. Olhar para você me traz uma paz absurda e uma certeza imensa de que te quero por perto." } 
+        },
+        3: { 
+            memory: { x: 250, y: 160, image: "foto3.jpg", text: "🥰 **Fase 3:** Nos passeios e nos detalhes mais simples, você colore a minha vida de um jeito único. Você é luz pura nos meus dias." } 
+        },
+        4: { 
+            memory: { x: 290, y: 170, image: "foto4.jpg", text: "🤪 **Fase 4:** Até nas brincadeiras e caretas a gente se completa. Com você eu posso ser eu mesmo sem medo de nada." } 
+        },
+        5: { 
+            memory: { x: 260, y: 160, image: "foto5.jpg", text: "🔥 **Fase 5:** Meu carinho, meu respeito e minha paixão por você só crescem. Você é a minha parceira pra qualquer parada." } 
+        },
+        6: { // FASE FINAL COM DECLARAÇÃO CHOCANTE E EMOCIONANTE
+            memory: { x: 270, y: 170, image: "foto6.jpg", text: "💥 **DECLARAÇÃO FINAL:**<br><br>Porra, meu amor... Você foi disparada a melhor pessoa que entrou na minha vida. Eu não consigo mais imaginar o meu mundo sem o seu carinho, sem o seu respeito e sem a sua presença.<br><br>Você me mudou completamente, me fez enxergar a vida com outros olhos e me ensinou o que é amar de verdade. Sou completamente, visceralmente apaixonado por você.<br><br>Você é a minha razão, meu norte, a pessoa mais importante de todas. Eu não vivo mais sem você. Obrigado por ser essa mulher incrível que me faz tão feliz todos os dias!" } 
+        }
+    };
+
+    function loadLevel(levelNum) {
+        currentLevel = levelNum;
+        document.getElementById('level-indicator').innerText = levelNum;
+        
+        // Remove elementos antigos da fase
+        document.querySelectorAll('.memory, .level-door').forEach(el => el.remove());
+
+        const container = document.getElementById('game-container');
+        const levelData = levels[levelNum];
+
+        // Cria o coração (memória)
+        const memEl = document.createElement('div');
+        memEl.className = 'memory';
+        memEl.style.left = `${levelData.memory.x}px`;
+        memEl.style.bottom = `${levelData.memory.y + 120}px`;
+        memEl.innerHTML = "❤️";
+        memEl.onclick = () => showMemory(levelData.memory.image, levelData.memory.text);
+        container.appendChild(memEl);
+
+        // Cria a porta para avançar (exceto na última fase)
+        if (levelNum < 6) {
+            const door = document.createElement('div');
+            door.className = 'level-door';
+            door.innerHTML = `Fase ${levelNum+1} ➔`;
+            door.onclick = () => loadLevel(levelNum + 1);
+            container.appendChild(door);
+        }
+        
+        playerX = 40;
+        updatePlayerPosition();
+    }
+
+    function showMemory(image, text) {
+        document.getElementById('memory-image').src = image;
+        document.getElementById('memory-text').innerHTML = text;
+        document.getElementById('memory-modal').style.display = 'flex';
+        playMusic();
+    }
+
+    document.getElementById('close-modal').onclick = () => {
+        document.getElementById('memory-modal').style.display = 'none';
+        if (currentLevel < 6) {
+            loadLevel(currentLevel + 1);
+        }
+    };
+
+    function movePlayer(direction) {
+        playMusic();
+        if (direction === 'left') playerX = Math.max(10, playerX - moveSpeed);
+        if (direction === 'right') playerX = Math.min(window.innerWidth - 60, playerX + moveSpeed);
+        if (direction === 'up' && !isJumping) {
+            isJumping = true;
+            let jumpHeight = 0;
+            const jumpInterval = setInterval(() => {
+                playerY += 8;
+                jumpHeight += 8;
+                updatePlayerPosition();
+                if (jumpHeight >= 110) {
+                    clearInterval(jumpInterval);
+                    const fallInterval = setInterval(() => {
+                        playerY -= 8;
+                        updatePlayerPosition();
+                        if (playerY <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                            playerY = 0;
+                            updatePlayerPosition();
+                        }
+                    }, 20);
+                }
+            }, 20);
+        }
+        updatePlayerPosition();
+        checkCollisions();
+    }
+
+    function updatePlayerPosition() {
+        player.style.left = `${playerX}px`;
+        player.style.bottom = `${playerY + 120}px`;
+    }
+
+    function checkCollisions() {
+        const playerRect = player.getBoundingClientRect();
+        
+        // Verifica clique ou proximidade com o coração
+        const memoryEl = document.querySelector('.memory');
+        if (memoryEl) {
+            const memRect = memoryEl.getBoundingClientRect();
+            if (playerRect.right > memRect.left && playerRect.left < memRect.right &&
+                playerRect.bottom > memRect.top && playerRect.top < memRect.bottom) {
+                memoryEl.click();
+            }
+        }
+
+        // Verifica colisão com a porta da próxima fase
+        const doorEl = document.querySelector('.level-door');
+        if (doorEl) {
+            const doorRect = doorEl.getBoundingClientRect();
+            if (playerRect.right > doorRect.left && playerRect.left < doorRect.right) {
+                if (currentLevel < 6) loadLevel(currentLevel + 1);
+            }
+        }
+    }
+
+    function playMusic() {
+        if (bgMusic.paused) {
+            bgMusic.play().catch(e => console.log("Áudio aguardando interação"));
+        }
+    }
+
+    // Controles de toque para celular
+    document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('left'); });
+    document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('right'); });
+    document.getElementById('btn-up').addEventListener('touchstart', (e) => { e.preventDefault(); movePlayer('up'); });
+
+    // Suporte a cliques normais (caso teste no computador)
+    document.getElementById('btn-left').addEventListener('click', () => movePlayer('left'));
+    document.getElementById('btn-right').addEventListener('click', () => movePlayer('right'));
+    document.getElementById('btn-up').addEventListener('click', () => movePlayer('up'));
+
+    // Teclado do PC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') movePlayer('left');
+        if (e.key === 'ArrowRight') movePlayer('right');
+        if (e.key === 'ArrowUp' || e.key === ' ') movePlayer('up');
+    });
+
+    // Inicia a Fase 1
+    loadLevel(1);
+</script>
+</body>
+</html>
